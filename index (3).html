@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Калькулятор</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <style>
+        :root {
+            --bg:#000; --gray:#333; --light:#a5a5a5; --orange:#ff9f0a;
+            --chat-bg:#0a0a0a; --header:#111; --border:#1e1e1e;
+            --me:#0a7aff; --them:#1c1c1e; --inp:#1c1c1e;
+        }
+        *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,sans-serif;user-select:none;-webkit-tap-highlight-color:transparent;}
+        html,body{width:100%;height:100%;background:#000;overflow:hidden;}
+
+        .screen{position:fixed;inset:0;transition:opacity .25s,transform .25s;}
+        .screen.hidden{opacity:0;pointer-events:none;transform:scale(.97);}
+
+        /* CALC */
+        #cs{background:#000;display:flex;flex-direction:column;justify-content:flex-end;
+            padding:20px;padding-bottom:calc(20px + env(safe-area-inset-bottom));}
+        #disp{color:#fff;font-size:clamp(56px,18vw,96px);font-weight:200;text-align:right;
+              margin-bottom:24px;padding:0 8px;overflow-x:auto;white-space:nowrap;letter-spacing:-2px;}
+        .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+        .btn{background:var(--gray);color:#fff;font-size:clamp(28px,9vw,40px);border:none;
+             border-radius:50%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;
+             cursor:pointer;transition:filter .1s;}
+        .btn:active{filter:brightness(1.4);}
+        .btn.t{background:var(--light);color:#000;}
+        .btn.o{background:var(--orange);}
+        .btn.z{grid-column:span 2;aspect-ratio:auto;border-radius:100px;justify-content:flex-start;padding-left:32px;}
+
+        /* CHAT */
+        #cht{background:var(--chat-bg);display:flex;flex-direction:column;}
+        #hdr{background:var(--header);padding:14px 16px;padding-top:calc(14px + env(safe-area-inset-top));
+             border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+        #htitle{color:#fff;font-size:17px;font-weight:600;}
+        #status{font-size:12px;color:#555;margin-top:2px;transition:color .3s;}
+        #status.on{color:#30d158;}
+        #xbtn{background:none;border:none;color:var(--orange);font-size:15px;cursor:pointer;padding:4px 8px;}
+
+        #msgs{flex:1;overflow-y:auto;padding:16px 12px;display:flex;flex-direction:column;gap:4px;}
+        #msgs::-webkit-scrollbar{width:0;}
+
+        .mw{display:flex;flex-direction:column;animation:mi .2s ease;}
+        @keyframes mi{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+        .mw.me{align-items:flex-end;}
+        .mw.them{align-items:flex-start;}
+        .mw+.mw{margin-top:2px;}
+        .mw.me+.mw.them,.mw.them+.mw.me{margin-top:12px;}
+        .lbl{font-size:11px;color:#555;margin-bottom:3px;padding:0 4px;}
+        .bbl{max-width:76%;padding:9px 13px;border-radius:18px;font-size:15px;line-height:1.45;color:#fff;word-wrap:break-word;}
+        .mw.me .bbl{background:var(--me);border-bottom-right-radius:5px;}
+        .mw.them .bbl{background:var(--them);border-bottom-left-radius:5px;}
+        .ts{font-size:10px;color:#444;margin-top:3px;padding:0 4px;}
+
+        #empty{display:none;flex-direction:column;align-items:center;justify-content:center;
+               flex:1;color:#333;font-size:14px;gap:8px;text-align:center;padding:24px;}
+        #empty.show{display:flex;}
+        #empty span{font-size:40px;}
+
+        /* NICK MODAL */
+        #nm{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(12px);
+            -webkit-backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;z-index:100;padding:24px;}
+        #nm.hidden{display:none;}
+        .card{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:20px;padding:28px 24px;width:100%;max-width:340px;}
+        .card h2{color:#fff;font-size:20px;font-weight:600;margin-bottom:8px;}
+        .card p{color:#888;font-size:14px;margin-bottom:20px;line-height:1.4;}
+        #ni{width:100%;background:#2a2a2a;border:1px solid #333;border-radius:12px;
+            padding:13px 16px;color:#fff;font-size:16px;outline:none;margin-bottom:14px;user-select:text;}
+        #ni:focus{border-color:var(--orange);}
+        #nok{width:100%;background:var(--orange);color:#000;border:none;border-radius:12px;
+             padding:13px;font-size:16px;font-weight:600;cursor:pointer;}
+
+        /* INPUT */
+        #ia{background:var(--header);border-top:1px solid var(--border);padding:10px 12px;
+            padding-bottom:calc(10px + env(safe-area-inset-bottom));display:flex;align-items:flex-end;gap:10px;flex-shrink:0;}
+        #mi{flex:1;background:var(--inp);border:none;border-radius:20px;padding:10px 14px;
+            color:#fff;font-size:16px;outline:none;user-select:text;resize:none;max-height:120px;overflow-y:auto;line-height:1.4;}
+        #mi::placeholder{color:#555;}
+        #sb{background:var(--orange);border:none;border-radius:50%;width:36px;height:36px;
+            display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;}
+        #sb svg{width:18px;height:18px;fill:#000;}
+
+        #toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(10px);
+               background:#222;color:#fff;padding:8px 16px;border-radius:20px;font-size:13px;
+               opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:200;white-space:nowrap;}
+        #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+    </style>
+</head>
+<body>
+
+<!-- КАЛЬКУЛЯТОР -->
+<div id="cs" class="screen">
+    <div id="disp">0</div>
+    <div class="grid">
+        <button class="btn t" onclick="cc()">AC</button>
+        <button class="btn t" onclick="co('+-')">+/-</button>
+        <button class="btn t" onclick="co('%')">%</button>
+        <button class="btn o" onclick="co('/')">÷</button>
+        <button class="btn" onclick="cn('7')">7</button>
+        <button class="btn" onclick="cn('8')">8</button>
+        <button class="btn" onclick="cn('9')">9</button>
+        <button class="btn o" onclick="co('*')">×</button>
+        <button class="btn" onclick="cn('4')">4</button>
+        <button class="btn" onclick="cn('5')">5</button>
+        <button class="btn" onclick="cn('6')">6</button>
+        <button class="btn o" onclick="co('-')">−</button>
+        <button class="btn" onclick="cn('1')">1</button>
+        <button class="btn" onclick="cn('2')">2</button>
+        <button class="btn" onclick="cn('3')">3</button>
+        <button class="btn o" onclick="co('+')">+</button>
+        <button class="btn z" onclick="cn('0')">0</button>
+        <button class="btn" onclick="cn('.')">,</button>
+        <button class="btn o" onclick="ceq()">=</button>
+    </div>
+</div>
+
+<!-- ЧАТ -->
+<div id="cht" class="screen hidden">
+    <div id="nm">
+        <div class="card">
+            <h2>Ваше имя</h2>
+            <p>Введите имя — оно будет видно собеседнику. Выбирается один раз.</p>
+            <input id="ni" type="text" placeholder="Например: Саша" maxlength="20" autocomplete="off">
+            <button id="nok" onclick="saveNick()">Войти в чат</button>
+        </div>
+    </div>
+    <div id="hdr">
+        <div>
+            <div id="htitle">🔒 Личный чат</div>
+            <div id="status">подключение...</div>
+        </div>
+        <button id="xbtn" onclick="closeChat()">Выйти</button>
+    </div>
+    <div id="msgs">
+        <div id="empty" class="show"><span>💬</span>Сообщений пока нет.<br>Напишите что-нибудь!</div>
+    </div>
+    <div id="ia">
+        <textarea id="mi" placeholder="Сообщение..." rows="1" autocomplete="off"></textarea>
+        <button id="sb" onclick="sendMsg()">
+            <svg viewBox="0 0 24 24"><path d="M2 21L23 12 2 3v7l15 2-15 2z"/></svg>
+        </button>
+    </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const URL  = 'https://lxaatqgcfsrvycanbelm.supabase.co';
+const KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx4YWF0cWdjZnNydnljYW5iZWxtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA4MjU0ODIsImV4cCI6MjA5NjQwMTQ4Mn0.z-Pl30UQh-3GPrE6ezztZngP3fjm_vIwm9IpYkX1zfA';
+const ROOM = 'main';
+const CODE = '110124';
+
+// ── КАЛЬКУЛЯТОР ──────────────────────────────────────────
+let dv='0', fop=null, op=null, wait=false;
+const $d = () => document.getElementById('disp').innerText = dv.slice(0,9);
+function cn(n){ dv=(wait||dv==='0')?n:dv+n; wait=false; $d(); }
+function cc(){ dv='0';fop=null;op=null;wait=false;$d(); }
+function co(x){
+    const v=parseFloat(dv);
+    if(x==='+-'){dv=String(v*-1);$d();return;}
+    if(x==='%'){dv=String(v/100);$d();return;}
+    if(op&&wait){op=x;return;}
+    fop=(fop===null)?v:op?cmath(op,fop,v):fop;
+    wait=true;op=x;$d();
+}
+function cmath(o,a,b){return o==='+'?a+b:o==='-'?a-b:o==='*'?a*b:o==='/'?a/b:b;}
+function ceq(){
+    if(dv===CODE){openChat();cc();return;}
+    if(!op)return;
+    dv=String(cmath(op,fop,parseFloat(dv)));
+    fop=null;op=null;wait=false;$d();
+}
+
+// ── СТЕЙТ ────────────────────────────────────────────────
+let myName = localStorage.getItem('nick')||'';
+let myUid  = localStorage.getItem('uid');
+if(!myUid){myUid=crypto.randomUUID();localStorage.setItem('uid',myUid);}
+let lastId = 0;       // последний полученный id (bigserial — просто число)
+let timer  = null;
+
+// ── SUPABASE ─────────────────────────────────────────────
+const H = {'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json','Prefer':'return=representation'};
+
+async function dbGet(q){
+    const r=await fetch(URL+'/rest/v1/'+q,{headers:H});
+    if(!r.ok)throw new Error(await r.text());
+    return r.json();
+}
+async function dbPost(body){
+    const r=await fetch(URL+'/rest/v1/messages',{method:'POST',headers:H,body:JSON.stringify(body)});
+    if(!r.ok)throw new Error(await r.text());
+    return r.json();
+}
+async function dbDel(){
+    await fetch(URL+'/rest/v1/messages?room=eq.'+ROOM,{method:'DELETE',headers:H}).catch(()=>{});
+}
+
+// ── POLLING ──────────────────────────────────────────────
+async function poll(){
+    try{
+        // Берём только сообщения с id > lastId — никаких проблем с временными зонами
+        const data = await dbGet('messages?room=eq.'+ROOM+'&id=gt.'+lastId+'&order=id.asc&limit=50');
+        if(data.length){
+            data.forEach(m=>{
+                render(m);
+                if(m.id>lastId) lastId=m.id;
+            });
+        }
+        setStatus(true);
+    }catch(e){
+        setStatus(false);
+    }
+}
+
+function startPoll(){ poll(); timer=setInterval(poll,2000); }
+function stopPoll(){ clearInterval(timer); timer=null; }
+
+// ── РЕНДЕР ───────────────────────────────────────────────
+function render(m){
+    const box=document.getElementById('msgs');
+    document.getElementById('empty').classList.remove('show');
+
+    const isMe = m.uid===myUid;
+    const wrap=document.createElement('div');
+    wrap.className='mw '+(isMe?'me':'them');
+    wrap.dataset.uid=m.uid;
+
+    // Имя собеседника (только если предыдущее сообщение от другого)
+    if(!isMe){
+        const prev=box.lastElementChild;
+        if(!prev||prev.dataset.uid!==m.uid){
+            const l=document.createElement('div');
+            l.className='lbl';
+            l.textContent=m.name;
+            wrap.appendChild(l);
+        }
+    }
+
+    const b=document.createElement('div');
+    b.className='bbl';
+    b.textContent=m.text;
+    wrap.appendChild(b);
+
+    const t=document.createElement('div');
+    t.className='ts';
+    t.textContent=new Date(m.created_at).toLocaleTimeString('ru',{hour:'2-digit',minute:'2-digit'});
+    wrap.appendChild(t);
+
+    box.appendChild(wrap);
+    box.scrollTop=box.scrollHeight;
+}
+
+// ── ОТПРАВКА ─────────────────────────────────────────────
+async function sendMsg(){
+    const inp=document.getElementById('mi');
+    const txt=inp.value.trim();
+    if(!txt)return;
+    inp.value='';
+    inp.style.height='auto';
+
+    try{
+        const saved=await dbPost({room:ROOM,uid:myUid,name:myName,text:txt});
+        if(saved&&saved[0]){
+            render(saved[0]);
+            lastId=saved[0].id;
+        }
+    }catch(e){
+        toast('Ошибка отправки');
+    }
+}
+
+// ── ИМЯ ──────────────────────────────────────────────────
+function saveNick(){
+    const v=document.getElementById('ni').value.trim();
+    if(!v)return;
+    myName=v;
+    localStorage.setItem('nick',myName);
+    document.getElementById('nm').classList.add('hidden');
+    startPoll();
+}
+
+// ── ОТКРЫТЬ / ЗАКРЫТЬ ────────────────────────────────────
+function openChat(){
+    document.getElementById('cs').classList.add('hidden');
+    document.getElementById('cht').classList.remove('hidden');
+    if(!myName){
+        document.getElementById('nm').classList.remove('hidden');
+        setTimeout(()=>document.getElementById('ni').focus(),100);
+    }else{
+        document.getElementById('nm').classList.add('hidden');
+        startPoll();
+    }
+}
+
+async function closeChat(){
+    stopPoll();
+    await dbDel();
+    lastId=0;
+    // Очистить UI
+    const box=document.getElementById('msgs');
+    box.innerHTML='<div id="empty" class="show"><span>💬</span>Сообщений пока нет.<br>Напишите что-нибудь!</div>';
+    document.getElementById('cht').classList.add('hidden');
+    document.getElementById('cs').classList.remove('hidden');
+}
+
+// ── ХЕЛПЕРЫ ──────────────────────────────────────────────
+function setStatus(ok){
+    const el=document.getElementById('status');
+    el.textContent=ok?'в сети':'нет соединения';
+    el.className=ok?'on':'';
+}
+function toast(msg){
+    const t=document.getElementById('toast');
+    t.textContent=msg;t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+document.getElementById('mi').addEventListener('input',function(){
+    this.style.height='auto';
+    this.style.height=Math.min(this.scrollHeight,120)+'px';
+});
+document.getElementById('mi').addEventListener('keypress',function(e){
+    if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}
+});
+document.getElementById('ni').addEventListener('keypress',function(e){
+    if(e.key==='Enter')saveNick();
+});
+
+if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script>
+</body>
+</html>
