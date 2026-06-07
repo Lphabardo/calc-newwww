@@ -17,10 +17,10 @@
         }
         *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,sans-serif;user-select:none;-webkit-tap-highlight-color:transparent;}
         html,body{width:100%;height:100%;background:#000;overflow:hidden;}
-
+ 
         .screen{position:fixed;inset:0;transition:opacity .25s,transform .25s;}
         .screen.hidden{opacity:0;pointer-events:none;transform:scale(.97);}
-
+ 
         /* CALC */
         #cs{background:#000;display:flex;flex-direction:column;justify-content:flex-end;
             padding:20px;padding-bottom:calc(20px + env(safe-area-inset-bottom));}
@@ -34,7 +34,7 @@
         .btn.t{background:var(--light);color:#000;}
         .btn.o{background:var(--orange);}
         .btn.z{grid-column:span 2;aspect-ratio:auto;border-radius:100px;justify-content:flex-start;padding-left:32px;}
-
+ 
         /* CHAT */
         #cht{background:var(--chat-bg);display:flex;flex-direction:column;}
         #hdr{background:var(--header);padding:14px 16px;padding-top:calc(14px + env(safe-area-inset-top));
@@ -43,10 +43,10 @@
         #status{font-size:12px;color:#555;margin-top:2px;transition:color .3s;}
         #status.on{color:#30d158;}
         #xbtn{background:none;border:none;color:var(--orange);font-size:15px;cursor:pointer;padding:4px 8px;}
-
+ 
         #msgs{flex:1;overflow-y:auto;padding:16px 12px;display:flex;flex-direction:column;gap:4px;}
         #msgs::-webkit-scrollbar{width:0;}
-
+ 
         .mw{display:flex;flex-direction:column;animation:mi .2s ease;}
         @keyframes mi{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
         .mw.me{align-items:flex-end;}
@@ -58,12 +58,12 @@
         .mw.me .bbl{background:var(--me);border-bottom-right-radius:5px;}
         .mw.them .bbl{background:var(--them);border-bottom-left-radius:5px;}
         .ts{font-size:10px;color:#444;margin-top:3px;padding:0 4px;}
-
+ 
         #empty{display:none;flex-direction:column;align-items:center;justify-content:center;
                flex:1;color:#333;font-size:14px;gap:8px;text-align:center;padding:24px;}
         #empty.show{display:flex;}
         #empty span{font-size:40px;}
-
+ 
         /* NICK MODAL */
         #nm{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(12px);
             -webkit-backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;z-index:100;padding:24px;}
@@ -76,7 +76,7 @@
         #ni:focus{border-color:var(--orange);}
         #nok{width:100%;background:var(--orange);color:#000;border:none;border-radius:12px;
              padding:13px;font-size:16px;font-weight:600;cursor:pointer;}
-
+ 
         /* INPUT */
         #ia{background:var(--header);border-top:1px solid var(--border);padding:10px 12px;
             padding-bottom:calc(10px + env(safe-area-inset-bottom));display:flex;align-items:flex-end;gap:10px;flex-shrink:0;}
@@ -86,7 +86,7 @@
         #sb{background:var(--orange);border:none;border-radius:50%;width:36px;height:36px;
             display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;}
         #sb svg{width:18px;height:18px;fill:#000;}
-
+ 
         #toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(10px);
                background:#222;color:#fff;padding:8px 16px;border-radius:20px;font-size:13px;
                opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:200;white-space:nowrap;}
@@ -94,7 +94,7 @@
     </style>
 </head>
 <body>
-
+ 
 <!-- КАЛЬКУЛЯТОР -->
 <div id="cs" class="screen">
     <div id="disp">0</div>
@@ -120,7 +120,7 @@
         <button class="btn o" onclick="ceq()">=</button>
     </div>
 </div>
-
+ 
 <!-- ЧАТ -->
 <div id="cht" class="screen hidden">
     <div id="nm">
@@ -142,21 +142,23 @@
         <div id="empty" class="show"><span>💬</span>Сообщений пока нет.<br>Напишите что-нибудь!</div>
     </div>
     <div id="ia">
+        <button onclick="document.getElementById('fi').click()" style="background:none;border:none;color:var(--orange);font-size:26px;cursor:pointer;padding:4px;flex-shrink:0;line-height:1;">📷</button>
+        <input type="file" id="fi" accept="image/*" style="display:none" onchange="sendPhoto(this)">
         <textarea id="mi" placeholder="Сообщение..." rows="1" autocomplete="off"></textarea>
         <button id="sb" onclick="sendMsg()">
             <svg viewBox="0 0 24 24"><path d="M2 21L23 12 2 3v7l15 2-15 2z"/></svg>
         </button>
     </div>
 </div>
-
+ 
 <div id="toast"></div>
-
+ 
 <script>
-const URL  = 'https://lxaatqgcfsrvycanbelm.supabase.co';
+const SB_URL = 'https://lxaatqgcfsrvycanbelm.supabase.co';
 const KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx4YWF0cWdjZnNydnljYW5iZWxtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA4MjU0ODIsImV4cCI6MjA5NjQwMTQ4Mn0.z-Pl30UQh-3GPrE6ezztZngP3fjm_vIwm9IpYkX1zfA';
 const ROOM = 'main';
 const CODE = '110124';
-
+ 
 // ── КАЛЬКУЛЯТОР ──────────────────────────────────────────
 let dv='0', fop=null, op=null, wait=false;
 const $d = () => document.getElementById('disp').innerText = dv.slice(0,9);
@@ -177,31 +179,31 @@ function ceq(){
     dv=String(cmath(op,fop,parseFloat(dv)));
     fop=null;op=null;wait=false;$d();
 }
-
+ 
 // ── СТЕЙТ ────────────────────────────────────────────────
 let myName = localStorage.getItem('nick')||'';
 let myUid  = localStorage.getItem('uid');
 if(!myUid){myUid=crypto.randomUUID();localStorage.setItem('uid',myUid);}
 let lastId = 0;       // последний полученный id (bigserial — просто число)
 let timer  = null;
-
+ 
 // ── SUPABASE ─────────────────────────────────────────────
 const H = {'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json','Prefer':'return=representation'};
-
+ 
 async function dbGet(q){
-    const r=await fetch(URL+'/rest/v1/'+q,{headers:H});
+    const r=await fetch(SB_URL+'/rest/v1/'+q,{headers:H});
     if(!r.ok)throw new Error(await r.text());
     return r.json();
 }
 async function dbPost(body){
-    const r=await fetch(URL+'/rest/v1/messages',{method:'POST',headers:H,body:JSON.stringify(body)});
+    const r=await fetch(SB_URL+'/rest/v1/messages',{method:'POST',headers:H,body:JSON.stringify(body)});
     if(!r.ok)throw new Error(await r.text());
     return r.json();
 }
 async function dbDel(){
-    await fetch(URL+'/rest/v1/messages?room=eq.'+ROOM,{method:'DELETE',headers:H}).catch(()=>{});
+    await fetch(SB_URL+'/rest/v1/messages?room=eq.'+ROOM,{method:'DELETE',headers:H}).catch(()=>{});
 }
-
+ 
 // ── POLLING ──────────────────────────────────────────────
 async function poll(){
     try{
@@ -218,20 +220,20 @@ async function poll(){
         setStatus(false);
     }
 }
-
+ 
 function startPoll(){ poll(); timer=setInterval(poll,2000); }
 function stopPoll(){ clearInterval(timer); timer=null; }
-
+ 
 // ── РЕНДЕР ───────────────────────────────────────────────
 function render(m){
     const box=document.getElementById('msgs');
     document.getElementById('empty').classList.remove('show');
-
+ 
     const isMe = m.uid===myUid;
     const wrap=document.createElement('div');
     wrap.className='mw '+(isMe?'me':'them');
     wrap.dataset.uid=m.uid;
-
+ 
     // Имя собеседника (только если предыдущее сообщение от другого)
     if(!isMe){
         const prev=box.lastElementChild;
@@ -242,21 +244,29 @@ function render(m){
             wrap.appendChild(l);
         }
     }
-
+ 
     const b=document.createElement('div');
     b.className='bbl';
-    b.textContent=m.text;
+    if(m.text&&m.text.startsWith('📷 ')){
+        const img=document.createElement('img');
+        img.src=m.text.slice(3);
+        img.style.cssText='max-width:100%;border-radius:12px;display:block;';
+        img.loading='lazy';
+        b.appendChild(img);
+    }else{
+        b.textContent=m.text;
+    }
     wrap.appendChild(b);
-
+ 
     const t=document.createElement('div');
     t.className='ts';
     t.textContent=new Date(m.created_at).toLocaleTimeString('ru',{hour:'2-digit',minute:'2-digit'});
     wrap.appendChild(t);
-
+ 
     box.appendChild(wrap);
     box.scrollTop=box.scrollHeight;
 }
-
+ 
 // ── ОТПРАВКА ─────────────────────────────────────────────
 async function sendMsg(){
     const inp=document.getElementById('mi');
@@ -264,7 +274,7 @@ async function sendMsg(){
     if(!txt)return;
     inp.value='';
     inp.style.height='auto';
-
+ 
     try{
         const saved=await dbPost({room:ROOM,uid:myUid,name:myName,text:txt});
         if(saved&&saved[0]){
@@ -275,7 +285,29 @@ async function sendMsg(){
         toast('Ошибка отправки');
     }
 }
-
+ 
+// ── ФОТО ─────────────────────────────────────────────────
+async function sendPhoto(input){
+    const file=input.files[0];
+    if(!file)return;
+    input.value='';
+    toast('Загружаем фото...');
+    try{
+        const ext=file.name.split('.').pop();
+        const path=ROOM+'/'+Date.now()+'.'+ext;
+        const r=await fetch(SB_URL+'/storage/v1/object/chat-images/'+path,{
+            method:'POST',
+            headers:{'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':file.type},
+            body:file
+        });
+        if(!r.ok)throw new Error();
+        const img_url=SB_URL+'/storage/v1/object/public/chat-images/'+path;
+        const saved=await dbPost({room:ROOM,uid:myUid,name:myName,text:'📷 '+img_url});
+        if(saved&&saved[0]){render(saved[0]);lastId=saved[0].id;}
+        toast('Фото отправлено');
+    }catch(e){toast('Ошибка загрузки фото');}
+}
+ 
 // ── ИМЯ ──────────────────────────────────────────────────
 function saveNick(){
     const v=document.getElementById('ni').value.trim();
@@ -285,7 +317,7 @@ function saveNick(){
     document.getElementById('nm').classList.add('hidden');
     startPoll();
 }
-
+ 
 // ── ОТКРЫТЬ / ЗАКРЫТЬ ────────────────────────────────────
 function openChat(){
     document.getElementById('cs').classList.add('hidden');
@@ -298,7 +330,7 @@ function openChat(){
         startPoll();
     }
 }
-
+ 
 async function closeChat(){
     stopPoll();
     await dbDel();
@@ -309,7 +341,7 @@ async function closeChat(){
     document.getElementById('cht').classList.add('hidden');
     document.getElementById('cs').classList.remove('hidden');
 }
-
+ 
 // ── ХЕЛПЕРЫ ──────────────────────────────────────────────
 function setStatus(ok){
     const el=document.getElementById('status');
@@ -321,7 +353,7 @@ function toast(msg){
     t.textContent=msg;t.classList.add('show');
     setTimeout(()=>t.classList.remove('show'),2500);
 }
-
+ 
 document.getElementById('mi').addEventListener('input',function(){
     this.style.height='auto';
     this.style.height=Math.min(this.scrollHeight,120)+'px';
@@ -332,7 +364,7 @@ document.getElementById('mi').addEventListener('keypress',function(e){
 document.getElementById('ni').addEventListener('keypress',function(e){
     if(e.key==='Enter')saveNick();
 });
-
+ 
 if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
 </body>
