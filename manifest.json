@@ -1,9 +1,9 @@
 {
-  "short_name": "Калькулятор",
-  "name": "Калькулятор плюс",
+  "short_name": "Часы",
+  "name": "Часы",
   "icons": [
     {
-      "src": "https://upload.wikimedia.org/wikipedia/commons/a/a4/Calculator_%28iOS_26%29_app_icon.png",
+      "src": "https://i.postimg.cc/jdDw9SQy/image-removebg-preview-(8).png",
       "type": "image/png",
       "sizes": "512x512"
     }
