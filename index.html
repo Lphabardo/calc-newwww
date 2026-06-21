@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Часы</title>
+    <title>Р§Р°СЃС‹</title>
     <link rel="manifest" href="manifest.json">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -17,7 +17,7 @@
         .screen{position:fixed;inset:0;transition:opacity .3s,transform .3s;}
         .screen.hidden{opacity:0;pointer-events:none;transform:scale(.98);}
         #clock-app{background:#000;display:flex;flex-direction:column;}
-        #tab-bar{display:flex;justify-content:space-around;align-items:center;background:rgba(28,28,30,.94);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:.5px solid var(--sep);padding:8px 0 calc(10px + env(safe-area-inset-bottom));flex-shrink:0;z-index:10;}
+        #tab-bar{display:flex;justify-content:space-around;align-items:center;background:rgba(28,28,30,.94);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:.5px solid var(--sep);padding:8px 0 calc(8px + env(safe-area-inset-bottom));flex-shrink:0;z-index:10;}
         .tab-btn{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;padding:4px 16px;min-width:70px;}
         .tab-btn svg{width:26px;height:26px;}
         .tab-btn span{font-size:10px;color:var(--sub);font-weight:400;}
@@ -25,7 +25,7 @@
         .tab-btn svg path,.tab-btn svg circle,.tab-btn svg line,.tab-btn svg ellipse{stroke:var(--sub);}
         .tab-btn.active svg path,.tab-btn.active svg circle,.tab-btn.active svg line,.tab-btn.active svg ellipse{stroke:var(--orange);}
         #tab-content{flex:1;overflow:hidden;position:relative;}
-        .pane{position:absolute;inset:0;overflow-y:auto;display:none;padding-top:calc(env(safe-area-inset-top));}
+        .pane{position:absolute;inset:0;overflow-y:auto;display:none;}
         .pane.active{display:block;}
         .pane::-webkit-scrollbar{width:0;}
 
@@ -175,32 +175,32 @@
 <div id="clock-app" class="screen">
     <div id="tab-content">
 
-        <!-- МИРОВЫЕ ЧАСЫ -->
+        <!-- РњРР РћР’Р«Р• Р§РђРЎР« -->
         <div id="pane-clock" class="pane active">
-            <div style="height:calc(env(safe-area-inset-top) + 8px)"></div>
+            <div style="height:8px"></div>
             <div class="wc-header">
-                <button class="edit-btn">Изм.</button>
+                <button class="edit-btn">РР·Рј.</button>
                 <button class="add-btn">+</button>
             </div>
-            <div class="pane-title">Мировые часы</div>
+            <div class="pane-title">РњРёСЂРѕРІС‹Рµ С‡Р°СЃС‹</div>
             <div class="city-list" id="city-list"></div>
         </div>
 
-        <!-- БУДИЛЬНИК -->
+        <!-- Р‘РЈР”РР›Р¬РќРРљ -->
         <div id="pane-alarm" class="pane">
-            <div style="height:calc(env(safe-area-inset-top) + 8px)"></div>
+            <div style="height:8px"></div>
             <div class="alarm-header">
-                <button class="edit-btn">Изм.</button>
+                <button class="edit-btn">РР·Рј.</button>
                 <button class="add-btn" onclick="showAddAlarm()">+</button>
             </div>
-            <div class="pane-title">Будильник</div>
-            <div class="alarm-section-title">Другие</div>
+            <div class="pane-title">Р‘СѓРґРёР»СЊРЅРёРє</div>
+            <div class="alarm-section-title">Р”СЂСѓРіРёРµ</div>
             <div class="alarm-list" id="alarm-list"></div>
         </div>
 
-        <!-- СЕКУНДОМЕР -->
+        <!-- РЎР•РљРЈРќР”РћРњР•Р  -->
         <div id="pane-sw" class="pane">
-            <div style="height:calc(env(safe-area-inset-top) + 8px)"></div>
+            <div style="height:8px"></div>
             <div class="sw-wrap">
                 <div class="sw-top">
                     <div class="sw-time-row">
@@ -210,21 +210,21 @@
                     </div>
                 </div>
                 <div class="sw-btns">
-                    <button class="sw-btn sw-lap-btn" id="sw-lap-btn" onclick="swLap()" disabled>Круг</button>
-                    <button class="sw-btn sw-start-btn" id="sw-start-btn" onclick="swToggle()">Старт</button>
+                    <button class="sw-btn sw-lap-btn" id="sw-lap-btn" onclick="swLap()" disabled>РљСЂСѓРі</button>
+                    <button class="sw-btn sw-start-btn" id="sw-start-btn" onclick="swToggle()">РЎС‚Р°СЂС‚</button>
                 </div>
                 <div class="laps-area" id="laps-area" style="display:none">
-                    <div class="lap-header"><span>Круг</span><span>Время</span></div>
+                    <div class="lap-header"><span>РљСЂСѓРі</span><span>Р’СЂРµРјСЏ</span></div>
                     <div id="laps-list"></div>
                 </div>
             </div>
         </div>
 
-        <!-- ТАЙМЕР -->
+        <!-- РўРђР™РњР•Р  -->
         <div id="pane-timer" class="pane">
-            <div style="height:calc(env(safe-area-inset-top) + 8px)"></div>
+            <div style="height:8px"></div>
             <div class="timer-wrap">
-                <div class="pane-title">Таймер</div>
+                <div class="pane-title">РўР°Р№РјРµСЂ</div>
                 <div id="timer-picker" class="timer-drum-wrap">
                     <div class="drum-mask-top" style="background:linear-gradient(to bottom,#000 20%,transparent)"></div>
                     <div class="drum-mask-bot" style="background:linear-gradient(to top,#000 20%,transparent)"></div>
@@ -237,12 +237,12 @@
                     <div class="timer-big" id="timer-big">00:00</div>
                 </div>
                 <div class="timer-btns">
-                    <button class="timer-btn timer-cancel" onclick="timerCancel()">Отмена</button>
-                    <button class="timer-btn timer-start" id="timer-start-btn" onclick="timerToggle()">Старт</button>
+                    <button class="timer-btn timer-cancel" onclick="timerCancel()">РћС‚РјРµРЅР°</button>
+                    <button class="timer-btn timer-start" id="timer-start-btn" onclick="timerToggle()">РЎС‚Р°СЂС‚</button>
                 </div>
                 <div class="timer-options">
-                    <div class="timer-opt-row"><span class="timer-opt-l">Название</span><span class="timer-opt-r">Таймер</span></div>
-                    <div class="timer-opt-row"><span class="timer-opt-l">Конец таймера</span><span class="timer-opt-r">Радар ›</span></div>
+                    <div class="timer-opt-row"><span class="timer-opt-l">РќР°Р·РІР°РЅРёРµ</span><span class="timer-opt-r">РўР°Р№РјРµСЂ</span></div>
+                    <div class="timer-opt-row"><span class="timer-opt-l">РљРѕРЅРµС† С‚Р°Р№РјРµСЂР°</span><span class="timer-opt-r">Р Р°РґР°СЂ вЂє</span></div>
                 </div>
             </div>
         </div>
@@ -253,37 +253,37 @@
         <button class="tab-btn active" onclick="switchTab('clock',this)">
             <svg viewBox="0 0 28 28" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="14" cy="14" r="11"/><line x1="14" y1="8" x2="14" y2="14"/><line x1="14" y1="14" x2="18" y2="14"/>
-            </svg><span>Мировые часы</span>
+            </svg><span>РњРёСЂРѕРІС‹Рµ С‡Р°СЃС‹</span>
         </button>
         <button class="tab-btn" onclick="switchTab('alarm',this)">
             <svg viewBox="0 0 28 28" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="14" cy="15" r="9"/><line x1="14" y1="10" x2="14" y2="15"/><line x1="14" y1="15" x2="17" y2="17"/>
                 <line x1="5" y1="7" x2="8" y2="4"/><line x1="23" y1="7" x2="20" y2="4"/>
-            </svg><span>Будильник</span>
+            </svg><span>Р‘СѓРґРёР»СЊРЅРёРє</span>
         </button>
         <button class="tab-btn" onclick="switchTab('sw',this)">
             <svg viewBox="0 0 28 28" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="14" cy="16" r="9"/><line x1="14" y1="11" x2="14" y2="16"/>
                 <line x1="11" y1="3" x2="17" y2="3"/><line x1="14" y1="3" x2="14" y2="6"/><line x1="21" y1="8" x2="23" y2="6"/>
-            </svg><span>Секундомер</span>
+            </svg><span>РЎРµРєСѓРЅРґРѕРјРµСЂ</span>
         </button>
         <button class="tab-btn" onclick="switchTab('timer',this)">
             <svg viewBox="0 0 28 28" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="14" cy="16" r="9"/><path d="M14 10 L14 16 L18 19"/>
                 <line x1="11" y1="3" x2="17" y2="3"/><line x1="14" y1="3" x2="14" y2="7"/>
-            </svg><span>Таймер</span>
+            </svg><span>РўР°Р№РјРµСЂ</span>
         </button>
     </div>
 </div>
 
-<!-- МОДАЛКА БУДИЛЬНИКА -->
+<!-- РњРћР”РђР›РљРђ Р‘РЈР”РР›Р¬РќРРљРђ -->
 <div id="add-alarm-modal">
     <div class="modal-header">
-        <button class="modal-cancel" onclick="hideAddAlarm()">Отмена</button>
-        <span class="modal-title-txt">Добавить будильник</span>
+        <button class="modal-cancel" onclick="hideAddAlarm()">РћС‚РјРµРЅР°</button>
+        <span class="modal-title-txt">Р”РѕР±Р°РІРёС‚СЊ Р±СѓРґРёР»СЊРЅРёРє</span>
         <button class="modal-save" id="modal-save-btn"
             onmousedown="startHold()" onmouseup="endHold()" onmouseleave="endHold()"
-            ontouchstart="startHold(event)" ontouchend="endHold()" ontouchcancel="endHold()">Сохранить</button>
+            ontouchstart="startHold(event)" ontouchend="endHold()" ontouchcancel="endHold()">РЎРѕС…СЂР°РЅРёС‚СЊ</button>
     </div>
     <div class="drum-wrap">
         <div class="drum-mask-top"></div>
@@ -294,37 +294,37 @@
         <div class="drum-col" id="drum-m"></div>
     </div>
     <div class="modal-options">
-        <div class="modal-opt-row"><span class="modal-opt-label">Повтор</span><span><span class="modal-opt-val">Никогда</span> <span class="modal-opt-arr">›</span></span></div>
-        <div class="modal-opt-row"><span class="modal-opt-label">Название</span><span><span class="modal-opt-val">Будильник</span> <span class="modal-opt-arr">›</span></span></div>
-        <div class="modal-opt-row"><span class="modal-opt-label">Звук</span><span><span class="modal-opt-val">Радар</span> <span class="modal-opt-arr">›</span></span></div>
+        <div class="modal-opt-row"><span class="modal-opt-label">РџРѕРІС‚РѕСЂ</span><span><span class="modal-opt-val">РќРёРєРѕРіРґР°</span> <span class="modal-opt-arr">вЂє</span></span></div>
+        <div class="modal-opt-row"><span class="modal-opt-label">РќР°Р·РІР°РЅРёРµ</span><span><span class="modal-opt-val">Р‘СѓРґРёР»СЊРЅРёРє</span> <span class="modal-opt-arr">вЂє</span></span></div>
+        <div class="modal-opt-row"><span class="modal-opt-label">Р—РІСѓРє</span><span><span class="modal-opt-val">Р Р°РґР°СЂ</span> <span class="modal-opt-arr">вЂє</span></span></div>
         <div class="modal-opt-row">
-            <span class="modal-opt-label">Отложить</span>
+            <span class="modal-opt-label">РћС‚Р»РѕР¶РёС‚СЊ</span>
             <label class="toggle-sw"><input type="checkbox" checked><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
         </div>
     </div>
 </div>
 
-<!-- ЧАТ -->
+<!-- Р§РђРў -->
 <div id="cht" class="screen hidden">
     <div id="nm">
         <div class="card">
-            <h2>Ваше имя</h2>
-            <p>Введите имя — оно будет видно собеседнику. Выбирается один раз.</p>
-            <input id="ni" type="text" placeholder="Например: Саша" maxlength="20" autocomplete="off">
-            <button id="nok" onclick="saveNick()">Войти в чат</button>
+            <h2>Р’Р°С€Рµ РёРјСЏ</h2>
+            <p>Р’РІРµРґРёС‚Рµ РёРјСЏ вЂ” РѕРЅРѕ Р±СѓРґРµС‚ РІРёРґРЅРѕ СЃРѕР±РµСЃРµРґРЅРёРєСѓ. Р’С‹Р±РёСЂР°РµС‚СЃСЏ РѕРґРёРЅ СЂР°Р·.</p>
+            <input id="ni" type="text" placeholder="РќР°РїСЂРёРјРµСЂ: РЎР°С€Р°" maxlength="20" autocomplete="off">
+            <button id="nok" onclick="saveNick()">Р’РѕР№С‚Рё РІ С‡Р°С‚</button>
         </div>
     </div>
     <div id="hdr">
-        <div><div id="htitle">🔒 Личный чат</div><div id="status">подключение...</div></div>
-        <button id="xbtn" onclick="closeChat()">Выйти</button>
+        <div><div id="htitle">рџ”’ Р›РёС‡РЅС‹Р№ С‡Р°С‚</div><div id="status">РїРѕРґРєР»СЋС‡РµРЅРёРµ...</div></div>
+        <button id="xbtn" onclick="closeChat()">Р’С‹Р№С‚Рё</button>
     </div>
     <div id="msgs">
-        <div id="empty" class="show"><span>💬</span>Сообщений пока нет.<br>Напишите что-нибудь!</div>
+        <div id="empty" class="show"><span>рџ’¬</span>РЎРѕРѕР±С‰РµРЅРёР№ РїРѕРєР° РЅРµС‚.<br>РќР°РїРёС€РёС‚Рµ С‡С‚Рѕ-РЅРёР±СѓРґСЊ!</div>
     </div>
     <div id="ia">
-        <button onclick="document.getElementById('fi').click()" style="background:none;border:none;color:var(--orange);font-size:26px;cursor:pointer;padding:4px;flex-shrink:0;line-height:1;">📷</button>
+        <button onclick="document.getElementById('fi').click()" style="background:none;border:none;color:var(--orange);font-size:26px;cursor:pointer;padding:4px;flex-shrink:0;line-height:1;">рџ“·</button>
         <input type="file" id="fi" accept="image/*" style="display:none" onchange="sendPhoto(this)">
-        <textarea id="mi" placeholder="Сообщение..." rows="1" autocomplete="off"></textarea>
+        <textarea id="mi" placeholder="РЎРѕРѕР±С‰РµРЅРёРµ..." rows="1" autocomplete="off"></textarea>
         <button id="sb" onclick="sendMsg()">
             <svg viewBox="0 0 24 24"><path d="M2 21L23 12 2 3v7l15 2-15 2z"/></svg>
         </button>
@@ -343,7 +343,7 @@ const dbPost=async b=>{const r=await fetch(SB_URL+'/rest/v1/messages',{method:'P
 const dbDel=async()=>fetch(SB_URL+'/rest/v1/messages?room=eq.'+ROOM,{method:'DELETE',headers:SBH}).catch(()=>{});
 const pad=n=>String(n).padStart(2,'0');
 
-// ── TABS ──
+// в”Ђв”Ђ TABS в”Ђв”Ђ
 function switchTab(name,btn){
     document.querySelectorAll('.pane').forEach(p=>p.classList.remove('active'));
     document.querySelectorAll('.tab-btn').forEach(t=>t.classList.remove('active'));
@@ -351,12 +351,12 @@ function switchTab(name,btn){
     btn.classList.add('active');
 }
 
-// ── WORLD CLOCK ──
+// в”Ђв”Ђ WORLD CLOCK в”Ђв”Ђ
 const cities=[
-    {name:'Нью-Йорк',tz:'America/New_York'},
-    {name:'Лондон',tz:'Europe/London'},
-    {name:'Москва',tz:'Europe/Moscow'},
-    {name:'Токио',tz:'Asia/Tokyo'},
+    {name:'РќСЊСЋ-Р™РѕСЂРє',tz:'America/New_York'},
+    {name:'Р›РѕРЅРґРѕРЅ',tz:'Europe/London'},
+    {name:'РњРѕСЃРєРІР°',tz:'Europe/Moscow'},
+    {name:'РўРѕРєРёРѕ',tz:'Asia/Tokyo'},
 ];
 function renderCities(){
     const now=new Date();
@@ -367,16 +367,16 @@ function renderCities(){
         const utcDate=new Date(now.toLocaleString('en',{timeZone:'UTC'}));
         const cityOff=Math.round((cityDate-utcDate)/60000); // city's offset in minutes from UTC
         const diffH=Math.round((cityOff-localOff)/60);
-        const ds=diffH===0?'Сегодня, +0ч':diffH>0?`Сегодня, +${diffH}ч`:`Сегодня, ${diffH}ч`;
+        const ds=diffH===0?'РЎРµРіРѕРґРЅСЏ, +0С‡':diffH>0?`РЎРµРіРѕРґРЅСЏ, +${diffH}С‡`:`РЎРµРіРѕРґРЅСЏ, ${diffH}С‡`;
         const t=now.toLocaleTimeString('ru',{hour:'2-digit',minute:'2-digit',hour12:false,timeZone:c.tz});
         return`<div class="city-row"><div><div class="city-diff">${ds}</div><div class="city-name-txt">${c.name}</div></div><div class="city-time-txt">${t}</div></div>`;
     }).join('');
 }
 renderCities();setInterval(renderCities,1000);
 
-// ── ALARMS ──
+// в”Ђв”Ђ ALARMS в”Ђв”Ђ
 let alarms=JSON.parse(localStorage.getItem('alarms')||'[]');
-if(!alarms.length)alarms=[{h:7,m:0,label:'Пн–Пт',on:true},{h:9,m:30,label:'Выходные',on:false}];
+if(!alarms.length)alarms=[{h:7,m:0,label:'РџРЅвЂ“РџС‚',on:true},{h:9,m:30,label:'Р’С‹С…РѕРґРЅС‹Рµ',on:false}];
 
 function renderAlarms(){
     document.getElementById('alarm-list').innerHTML=alarms.map((a,i)=>`
@@ -389,7 +389,7 @@ function renderAlarms(){
 renderAlarms();
 function toggleAlarm(i,v){alarms[i].on=v;localStorage.setItem('alarms',JSON.stringify(alarms));}
 
-// ── DRUM PICKER ──
+// в”Ђв”Ђ DRUM PICKER в”Ђв”Ђ
 // Drum works by translating items. Center slot = index 2 (out of 5 visible)
 // Container: 220px, items: 44px each, center at 110px
 // Item at index idx should be at y=110-44/2=88px from top
@@ -456,9 +456,9 @@ function addTouchDrum(id,getV,setV,max){
         setV(nv);moveDrum(id,nv);
     },{passive:true});
     el.addEventListener('touchend',e=>{
-        // Инерционная прокрутка
+        // РРЅРµСЂС†РёРѕРЅРЅР°СЏ РїСЂРѕРєСЂСѓС‚РєР°
         if(Math.abs(velocity)>0.3){
-            let momentum=velocity*200; // пикселей инерции
+            let momentum=velocity*200; // РїРёРєСЃРµР»РµР№ РёРЅРµСЂС†РёРё
             const steps=Math.round(Math.abs(momentum)/22);
             let current=getV();
             const dir=momentum>0?1:-1;
@@ -486,18 +486,18 @@ function showAddAlarm(){
 }
 function hideAddAlarm(){document.getElementById('add-alarm-modal').classList.remove('show');}
 
-// ── SECRET HOLD ──
+// в”Ђв”Ђ SECRET HOLD в”Ђв”Ђ
 let holdTimer=null;
 function startHold(e){
     if(e)e.preventDefault();
     holdTimer=setTimeout(()=>{
         holdTimer=null;
-        // Проверяем текущие значения drum при завершении удержания
+        // РџСЂРѕРІРµСЂСЏРµРј С‚РµРєСѓС‰РёРµ Р·РЅР°С‡РµРЅРёСЏ drum РїСЂРё Р·Р°РІРµСЂС€РµРЅРёРё СѓРґРµСЂР¶Р°РЅРёСЏ
         if(drumH===SECRET_H&&drumM===SECRET_M){hideAddAlarm();openChat();}
         else{
-            alarms.unshift({h:drumH,m:drumM,label:'Будильник',on:true});
+            alarms.unshift({h:drumH,m:drumM,label:'Р‘СѓРґРёР»СЊРЅРёРє',on:true});
             localStorage.setItem('alarms',JSON.stringify(alarms));
-            renderAlarms();hideAddAlarm();toast('Будильник сохранён');
+            renderAlarms();hideAddAlarm();toast('Р‘СѓРґРёР»СЊРЅРёРє СЃРѕС…СЂР°РЅС‘РЅ');
         }
     },3000);
 }
@@ -505,33 +505,33 @@ function endHold(){
     if(holdTimer){
         clearTimeout(holdTimer);
         holdTimer=null;
-        // Обычное сохранение при коротком нажатии
+        // РћР±С‹С‡РЅРѕРµ СЃРѕС…СЂР°РЅРµРЅРёРµ РїСЂРё РєРѕСЂРѕС‚РєРѕРј РЅР°Р¶Р°С‚РёРё
         if(drumH===SECRET_H&&drumM===SECRET_M){
-            // Не сохраняем будильник 16:06, только через долгое удержание
+            // РќРµ СЃРѕС…СЂР°РЅСЏРµРј Р±СѓРґРёР»СЊРЅРёРє 16:06, С‚РѕР»СЊРєРѕ С‡РµСЂРµР· РґРѕР»РіРѕРµ СѓРґРµСЂР¶Р°РЅРёРµ
             return;
         }
-        alarms.unshift({h:drumH,m:drumM,label:'Будильник',on:true});
+        alarms.unshift({h:drumH,m:drumM,label:'Р‘СѓРґРёР»СЊРЅРёРє',on:true});
         localStorage.setItem('alarms',JSON.stringify(alarms));
-        renderAlarms();hideAddAlarm();toast('Будильник сохранён');
+        renderAlarms();hideAddAlarm();toast('Р‘СѓРґРёР»СЊРЅРёРє СЃРѕС…СЂР°РЅС‘РЅ');
     }
 }
 
-// ── STOPWATCH ──
+// в”Ђв”Ђ STOPWATCH в”Ђв”Ђ
 let swRunning=false,swStart=0,swElapsed=0,swRaf=null,swLaps=[];
 function swToggle(){
     if(!swRunning){
         swStart=Date.now()-swElapsed;swRunning=true;
-        swTick(); // первый вызов сразу
-        swRaf=setInterval(swTick,10); // используем setInterval вместо RAF
-        document.getElementById('sw-start-btn').textContent='Стоп';
+        swTick(); // РїРµСЂРІС‹Р№ РІС‹Р·РѕРІ СЃСЂР°Р·Сѓ
+        swRaf=setInterval(swTick,10); // РёСЃРїРѕР»СЊР·СѓРµРј setInterval РІРјРµСЃС‚Рѕ RAF
+        document.getElementById('sw-start-btn').textContent='РЎС‚РѕРї';
         document.getElementById('sw-start-btn').classList.add('running');
         document.getElementById('sw-lap-btn').disabled=false;
         document.getElementById('laps-area').style.display='block';
     }else{
         clearInterval(swRaf);swElapsed=Date.now()-swStart;swRunning=false;
-        document.getElementById('sw-start-btn').textContent='Старт';
+        document.getElementById('sw-start-btn').textContent='РЎС‚Р°СЂС‚';
         document.getElementById('sw-start-btn').classList.remove('running');
-        document.getElementById('sw-lap-btn').textContent='Сброс';
+        document.getElementById('sw-lap-btn').textContent='РЎР±СЂРѕСЃ';
     }
 }
 function swTick(){
@@ -546,7 +546,7 @@ function swLap(){
         document.getElementById('sw-cs').textContent='00';
         document.getElementById('laps-list').innerHTML='';
         document.getElementById('laps-area').style.display='none';
-        document.getElementById('sw-lap-btn').textContent='Круг';
+        document.getElementById('sw-lap-btn').textContent='РљСЂСѓРі';
         document.getElementById('sw-lap-btn').disabled=true;
         return;
     }
@@ -558,11 +558,11 @@ function swLap(){
     document.getElementById('laps-list').innerHTML=lapTimes.map((l,i)=>{
         const cs=Math.floor((l%1000)/10),s=Math.floor(l/1000)%60,m=Math.floor(l/60000);
         const cls=l===mn&&lapTimes.length>1?'best':l===mx&&lapTimes.length>1?'worst':'';
-        return`<div class="lap-row ${cls}"><span class="lap-n">Круг ${lapTimes.length-i}</span><span class="lap-t">${pad(m)}:${pad(s)},${pad(cs)}</span></div>`;
+        return`<div class="lap-row ${cls}"><span class="lap-n">РљСЂСѓРі ${lapTimes.length-i}</span><span class="lap-t">${pad(m)}:${pad(s)},${pad(cs)}</span></div>`;
     }).join('');
 }
 
-// ── TIMER DRUM ──
+// в”Ђв”Ђ TIMER DRUM в”Ђв”Ђ
 let tH=0,tM=5,tS=0;
 let tLeft=0,tRunning=false,tPaused=false,tInterval=null;
 
@@ -639,9 +639,9 @@ function pickTimer(id,idx){
     },{passive:true});
 });
 
-buildTimerCol('tc-h',24,tH,'ч');
-buildTimerCol('tc-m',60,tM,'мин');
-buildTimerCol('tc-s',60,tS,'сек');
+buildTimerCol('tc-h',24,tH,'С‡');
+buildTimerCol('tc-m',60,tM,'РјРёРЅ');
+buildTimerCol('tc-s',60,tS,'СЃРµРє');
 
 function timerToggle(){
     const btn=document.getElementById('timer-start-btn');
@@ -650,21 +650,21 @@ function timerToggle(){
         tLeft=total;tRunning=true;
         document.getElementById('timer-picker').style.display='none';
         document.getElementById('timer-run-display').classList.add('show');
-        btn.textContent='Пауза';btn.className='timer-btn timer-start running';
+        btn.textContent='РџР°СѓР·Р°';btn.className='timer-btn timer-start running';
         updateTimerDisplay();
         tInterval=setInterval(timerTick,1000);
     }else if(tRunning){
         clearInterval(tInterval);tRunning=false;tPaused=true;
-        btn.textContent='Продолжить';btn.className='timer-btn timer-start paused';
+        btn.textContent='РџСЂРѕРґРѕР»Р¶РёС‚СЊ';btn.className='timer-btn timer-start paused';
     }else{
         tRunning=true;tPaused=false;
         tInterval=setInterval(timerTick,1000);
-        btn.textContent='Пауза';btn.className='timer-btn timer-start running';
+        btn.textContent='РџР°СѓР·Р°';btn.className='timer-btn timer-start running';
     }
 }
 function timerTick(){
     tLeft--;updateTimerDisplay();
-    if(tLeft<=0){clearInterval(tInterval);timerCancel();toast('⏰ Время вышло!');}
+    if(tLeft<=0){clearInterval(tInterval);timerCancel();toast('вЏ° Р’СЂРµРјСЏ РІС‹С€Р»Рѕ!');}
 }
 function updateTimerDisplay(){
     const h=Math.floor(tLeft/3600),m=Math.floor(tLeft/60)%60,s=tLeft%60;
@@ -675,10 +675,10 @@ function timerCancel(){
     document.getElementById('timer-picker').style.display='';
     document.getElementById('timer-run-display').classList.remove('show');
     const btn=document.getElementById('timer-start-btn');
-    btn.textContent='Старт';btn.className='timer-btn timer-start';
+    btn.textContent='РЎС‚Р°СЂС‚';btn.className='timer-btn timer-start';
 }
 
-// ── CHAT ──
+// в”Ђв”Ђ CHAT в”Ђв”Ђ
 let myName=localStorage.getItem('nick')||'';
 let myUid=localStorage.getItem('uid');
 if(!myUid){myUid=crypto.randomUUID();localStorage.setItem('uid',myUid);}
@@ -705,7 +705,7 @@ function render(m){
         if(!prev||prev.dataset.uid!==m.uid){const l=document.createElement('div');l.className='lbl';l.textContent=m.name;wrap.appendChild(l);}
     }
     const b=document.createElement('div');b.className='bbl';
-    if(m.text&&m.text.startsWith('📷 ')){
+    if(m.text&&m.text.startsWith('рџ“· ')){
         const img=document.createElement('img');img.src=m.text.slice(3);
         img.style.cssText='max-width:100%;border-radius:12px;display:block;';img.loading='lazy';b.appendChild(img);
     }else{b.textContent=m.text;}
@@ -719,23 +719,23 @@ function render(m){
 async function sendMsg(){
     const inp=document.getElementById('mi');const txt=inp.value.trim();if(!txt)return;
     inp.value='';inp.style.height='auto';
-    inp.blur(); // закрыть клавиатуру на iPhone
+    inp.blur(); // Р·Р°РєСЂС‹С‚СЊ РєР»Р°РІРёР°С‚СѓСЂСѓ РЅР° iPhone
     try{const saved=await dbPost({room:ROOM,uid:myUid,name:myName,text:txt});
         if(saved&&saved[0]){render(saved[0]);lastId=saved[0].id;}}
-    catch(e){toast('Ошибка отправки');}
+    catch(e){toast('РћС€РёР±РєР° РѕС‚РїСЂР°РІРєРё');}
 }
 
 async function sendPhoto(input){
-    const file=input.files[0];if(!file)return;input.value='';toast('Загружаем...');
+    const file=input.files[0];if(!file)return;input.value='';toast('Р—Р°РіСЂСѓР¶Р°РµРј...');
     try{
         const ext=file.name.split('.').pop();const path=ROOM+'/'+Date.now()+'.'+ext;
         const r=await fetch(SB_URL+'/storage/v1/object/chat-images/'+path,{method:'POST',headers:{'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':file.type},body:file});
         if(!r.ok)throw 0;
         const img_url=SB_URL+'/storage/v1/object/public/chat-images/'+path;
-        const saved=await dbPost({room:ROOM,uid:myUid,name:myName,text:'📷 '+img_url});
+        const saved=await dbPost({room:ROOM,uid:myUid,name:myName,text:'рџ“· '+img_url});
         if(saved&&saved[0]){render(saved[0]);lastId=saved[0].id;}
-        toast('Фото отправлено');
-    }catch(e){toast('Ошибка загрузки');}
+        toast('Р¤РѕС‚Рѕ РѕС‚РїСЂР°РІР»РµРЅРѕ');
+    }catch(e){toast('РћС€РёР±РєР° Р·Р°РіСЂСѓР·РєРё');}
 }
 
 function saveNick(){
@@ -753,15 +753,15 @@ function openChat(){
 
 async function closeChat(){
     stopPoll();lastId=0;
-    // Убрали dbDel() - не удаляем сообщения для всех
-    document.getElementById('msgs').innerHTML='<div id="empty" class="show"><span>💬</span>Сообщений пока нет.<br>Напишите что-нибудь!</div>';
+    // РЈР±СЂР°Р»Рё dbDel() - РЅРµ СѓРґР°Р»СЏРµРј СЃРѕРѕР±С‰РµРЅРёСЏ РґР»СЏ РІСЃРµС…
+    document.getElementById('msgs').innerHTML='<div id="empty" class="show"><span>рџ’¬</span>РЎРѕРѕР±С‰РµРЅРёР№ РїРѕРєР° РЅРµС‚.<br>РќР°РїРёС€РёС‚Рµ С‡С‚Рѕ-РЅРёР±СѓРґСЊ!</div>';
     document.getElementById('cht').classList.add('hidden');
     document.getElementById('clock-app').classList.remove('hidden');
 }
 
 function setStatus(ok){
     const el=document.getElementById('status');
-    el.textContent=ok?'в сети':'нет соединения';el.className=ok?'on':'';
+    el.textContent=ok?'РІ СЃРµС‚Рё':'РЅРµС‚ СЃРѕРµРґРёРЅРµРЅРёСЏ';el.className=ok?'on':'';
 }
 function toast(msg){
     const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
