@@ -85,7 +85,8 @@
         .modal-opt-arr{color:var(--sub);font-size:17px;}
 
         /* STOPWATCH */
-        #pane-sw{background:#000;display:flex;flex-direction:column;overflow:hidden;}
+        #pane-sw{background:#000;flex-direction:column;overflow:hidden;}
+        #pane-sw.active{display:flex;}
         .sw-wrap{display:flex;flex-direction:column;flex:1;min-height:0;}
         .sw-top{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding-top:40px;}
         .sw-time-row{display:flex;align-items:baseline;gap:2px;}
@@ -478,7 +479,7 @@ addTouchDrum('drum-h',()=>drumH,v=>drumH=v,23);
 addTouchDrum('drum-m',()=>drumM,v=>drumM=v,59);
 
 function showAddAlarm(){
-    drumH=SECRET_H;drumM=SECRET_M;
+    drumH=0;drumM=0;
     buildDrum('drum-h',24,drumH);
     buildDrum('drum-m',60,drumM);
     document.getElementById('add-alarm-modal').classList.add('show');
@@ -775,4 +776,3 @@ if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(
 </script>
 </body>
 </html>
-
